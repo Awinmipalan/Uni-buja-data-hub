@@ -9,84 +9,12 @@ function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-const initialFacultyData = [
-  { id: 1, name: 'Faculty of Law', students: 450, avgCgpa: 3.45, passRate: 88, staffRatio: '24:1', compliance: 'Optimal', studentId: 'UA/23/LAW/001' },
-  { id: 2, name: 'Pharmaceutical Sciences', students: 380, avgCgpa: 3.38, passRate: 85, staffRatio: '18:1', compliance: 'Optimal', studentId: 'UA/23/PHA/042' },
-  { id: 3, name: 'Veterinary Medicine', students: 210, avgCgpa: 3.12, passRate: 79, staffRatio: '15:1', compliance: 'Optimal', studentId: 'UA/23/VET/011' },
-  { id: 4, name: 'Faculty of Science', students: 850, avgCgpa: 2.54, passRate: 64, staffRatio: '28:1', compliance: 'Acceptable', studentId: 'UA/23/SCI/089' },
-  { id: 5, name: 'Faculty of Agriculture', students: 620, avgCgpa: 2.10, passRate: 58, staffRatio: '22:1', compliance: 'Acceptable', studentId: 'UA/23/AGR/102' },
-  { id: 6, name: 'Faculty of Engineering', students: 950, avgCgpa: 2.85, passRate: 72, staffRatio: '32:1', compliance: 'Warning', studentId: 'UA/23/ENG/055' },
-  { id: 7, name: 'Arts & Humanities', students: 1200, avgCgpa: 2.95, passRate: 75, staffRatio: '38:1', compliance: 'Action Required', studentId: 'UA/23/ART/201' },
-];
-
-const admissionRatesData = [
-  { name: 'Law', admitted: 150, applied: 1200 },
-  { name: 'Pharm', admitted: 120, applied: 800 },
-  { name: 'Vet Med', admitted: 80, applied: 300 },
-  { name: 'Science', admitted: 400, applied: 1500 },
-  { name: 'Agric', admitted: 350, applied: 600 },
-  { name: 'Eng', admitted: 250, applied: 1800 },
-  { name: 'Arts', admitted: 500, applied: 1100 },
-];
-
-const jambScoresData = [
-  { name: 'Law', Admitted: 275, Rejected: 210 },
-  { name: 'Pharm', Admitted: 268, Rejected: 205 },
-  { name: 'Vet Med', Admitted: 245, Rejected: 195 },
-  { name: 'Science', Admitted: 220, Rejected: 180 },
-  { name: 'Agric', Admitted: 205, Rejected: 175 },
-  { name: 'Eng', Admitted: 260, Rejected: 200 },
-  { name: 'Arts', Admitted: 215, Rejected: 185 },
-];
-
-const stateOfOriginData = [
-  { name: 'FCT', value: 450 },
-  { name: 'Kogi', value: 300 },
-  { name: 'Nasarawa', value: 250 },
-  { name: 'Niger', value: 200 },
-  { name: 'Kaduna', value: 150 },
-  { name: 'Others', value: 500 },
-];
 const COLORS = ['#1A3A5C', '#F0C060', '#10B981', '#E67E22', '#C0392B', '#94A3B8'];
 const FINANCE_COLORS = ['#10B981', '#F59E0B', '#EF4444'];
 
-const revenueByFacultyData = [
-  { name: 'Law', collected: 15.2, outstanding: 2.1 },
-  { name: 'Pharm', collected: 18.5, outstanding: 1.5 },
-  { name: 'Vet', collected: 12.0, outstanding: 3.2 },
-  { name: 'Science', collected: 25.4, outstanding: 5.8 },
-  { name: 'Agric', collected: 14.8, outstanding: 4.1 },
-  { name: 'Eng', collected: 32.1, outstanding: 6.5 },
-  { name: 'Arts', collected: 20.5, outstanding: 8.2 },
-];
-
-const paymentStatusData = [
-  { name: 'Paid in Full', value: 75 },
-  { name: 'Partial Payment', value: 15 },
-  { name: 'Defaulters', value: 10 },
-];
-
-const recentTransactions = [
-  { id: 'TRX-8291', student: 'UA/20/LAW/045', amount: 150000, date: new Date().toLocaleDateString(), status: 'Success', type: 'Tuition' },
-  { id: 'TRX-8292', student: 'UA/22/ENG/112', amount: 85000, date: new Date().toLocaleDateString(), status: 'Pending', type: 'Hostel' },
-  { id: 'TRX-8293', student: 'UA/19/SCI/003', amount: 120000, date: 'Yesterday', status: 'Success', type: 'Tuition' },
-  { id: 'TRX-8294', student: 'UA/23/ART/289', amount: 50000, date: 'Yesterday', status: 'Failed', type: 'Acceptance' },
-  { id: 'TRX-8295', student: 'UA/21/AGR/067', amount: 150000, date: 'Oct 12, 2024', status: 'Success', type: 'Tuition' },
-];
-
-const revenueTrend = [
-  { name: 'Jan', revenue: 120 },
-  { name: 'Feb', revenue: 150 },
-  { name: 'Mar', revenue: 180 },
-  { name: 'Apr', revenue: 220 },
-  { name: 'May', revenue: 280 },
-  { name: 'Jun', revenue: 260 },
-  { name: 'Jul', revenue: 310 },
-];
-
 // Minimal mock data and state for the Analytics Hub.
 export default function App() {
-  const [activeTab, setActiveTab] = useState('admissions');
+  const [activeTab, setActiveTab] = useState('overview');
   const [time, setTime] = useState(new Date().toLocaleTimeString());
   const [uploadedFiles, setUploadedFiles] = useState<Record<string, { count: number, name: string }>>({});
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -103,18 +31,82 @@ export default function App() {
   const [assignedTasks, setAssignedTasks] = useState<Record<string, string[]>>({});
   const [customTaskInput, setCustomTaskInput] = useState('');
 
+  // API Data States
+  const [facultyData, setFacultyData] = useState<any[]>([]);
+  const [admissionRatesData, setAdmissionRatesData] = useState<any[]>([]);
+  const [jambScoresData, setJambScoresData] = useState<any[]>([]);
+  const [stateOfOriginData, setStateOfOriginData] = useState<any[]>([]);
+  const [revenueByFacultyData, setRevenueByFacultyData] = useState<any[]>([]);
+  const [paymentStatusData, setPaymentStatusData] = useState<any[]>([]);
+  const [recentTransactions, setRecentTransactions] = useState<any[]>([]);
+  const [revenueTrend, setRevenueTrend] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [
+          facultyRes,
+          admissionRes,
+          jambRes,
+          stateRes,
+          revenueFacultyRes,
+          paymentRes,
+          transactionsRes,
+          revenueTrendRes
+        ] = await Promise.all([
+          fetch('/api/dashboard/faculty-insights'),
+          fetch('/api/dashboard/admission-rates'),
+          fetch('/api/dashboard/jamb-scores'),
+          fetch('/api/dashboard/state-origin'),
+          fetch('/api/dashboard/finance/revenue-by-faculty'),
+          fetch('/api/dashboard/finance/payment-status'),
+          fetch('/api/dashboard/finance/recent-transactions'),
+          fetch('/api/dashboard/finance/revenue-trend')
+        ]);
+
+        setFacultyData(await facultyRes.json());
+        setAdmissionRatesData(await admissionRes.json());
+        setJambScoresData(await jambRes.json());
+        setStateOfOriginData(await stateRes.json());
+        setRevenueByFacultyData(await revenueFacultyRes.json());
+        setPaymentStatusData(await paymentRes.json());
+        setRecentTransactions(await transactionsRes.json());
+        setRevenueTrend(await revenueTrendRes.json());
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
   const handleAssignTask = (faculty: any) => {
     setTaskModalFaculty(faculty);
     setCustomTaskInput('');
   };
 
-  const submitTask = (task: string) => {
+  const submitTask = async (task: string) => {
     if (!task) return;
-    setAssignedTasks(prev => ({
-      ...prev,
-      [taskModalFaculty.id]: [...(prev[taskModalFaculty.id] || []), task]
-    }));
-    setCustomTaskInput('');
+    
+    try {
+      await fetch(`/api/dashboard/faculty/${taskModalFaculty.id}/tasks`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ task }),
+      });
+      
+      setAssignedTasks(prev => ({
+        ...prev,
+        [taskModalFaculty.id]: [...(prev[taskModalFaculty.id] || []), task]
+      }));
+      setCustomTaskInput('');
+    } catch (err) {
+      console.error('Failed to assign task', err);
+    }
   };
 
   const closeTaskModal = () => {
@@ -148,7 +140,7 @@ export default function App() {
     setShowFilterConfirm(false);
   };
 
-  const sortedFacultyData = [...initialFacultyData]
+  const sortedFacultyData = [...facultyData]
     .filter((faculty) => {
       if (cgpaFilter === 'high' && faculty.avgCgpa < 3.0) return false;
       if (cgpaFilter === 'medium' && (faculty.avgCgpa < 2.5 || faculty.avgCgpa >= 3.0)) return false;
@@ -187,8 +179,47 @@ export default function App() {
     return () => clearInterval(timer);
   }, []);
 
+  const exportToCsv = (filename: string, rows: any[]) => {
+    const csv = Papa.unparse(rows);
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", filename);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleExportAdmissions = () => exportToCsv('Admissions_Report.csv', admissionRatesData);
+  const handleExportFaculty = () => exportToCsv('Faculty_Insights.csv', sortedFacultyData);
+  const handleExportFinance = () => exportToCsv('Financial_Report.csv', revenueByFacultyData);
+
   const downloadReport = () => {
-    alert("Automation Success: 42 Individual Memoranda generated and packaged into UniAbuja_Critical_Risk_2024.zip");
+    // Generate a temporary print view or just instruct user
+    alert("Automation Success: Document prepared. Please proceed to save as PDF in the print dialog.");
+    window.print();
+  };
+
+  const handleEmailDeans = async () => {
+    try {
+      const res = await fetch('/api/dashboard/communication/email-deans', { method: 'POST' });
+      const data = await res.json();
+      alert(data.message);
+    } catch (e) {
+      alert("Failed to email deans.");
+    }
+  };
+
+  const handleSendReminders = async () => {
+    try {
+      const res = await fetch('/api/dashboard/finance/send-reminders', { method: 'POST' });
+      const data = await res.json();
+      alert(data.message);
+    } catch (e) {
+      alert("Failed to send reminders.");
+    }
   };
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -231,6 +262,15 @@ export default function App() {
       {label}
     </div>
   );
+
+  if (isLoading) {
+    return (
+      <div className="bg-[#f0f2f5] min-h-screen flex flex-col items-center justify-center font-sans">
+        <div className="w-12 h-12 border-4 border-[#1A3A5C]/20 border-t-[#1A3A5C] rounded-full animate-spin mb-4"></div>
+        <div className="text-[#1A3A5C] font-semibold">Loading UniAbuja Analytics Hub...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-[#f0f2f5] p-2 sm:p-5 font-sans min-h-screen flex items-center justify-center">
@@ -588,14 +628,14 @@ export default function App() {
                     </div>
                     <div className="h-64">
                       <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={initialFacultyData} margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
+                        <BarChart data={facultyData} margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
                           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
                           <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#64748B' }} interval={0} tickFormatter={(val) => val.replace('Faculty of ', '').replace('iences', '')} />
                           <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#64748B' }} domain={[0, 4]} />
                           <RechartsTooltip cursor={{ fill: '#F1F5F9' }} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
                           <Bar dataKey="avgCgpa" name="Avg CGPA" fill="#1A3A5C" radius={[4, 4, 0, 0]} barSize={40}>
                             {
-                              initialFacultyData.map((entry, index) => (
+                              facultyData.map((entry, index) => (
                                 <Cell key={`cell-${index}`} fill={entry.avgCgpa < 2.5 ? '#EF4444' : entry.avgCgpa > 3.0 ? '#10B981' : '#1A3A5C'} />
                               ))
                             }
@@ -685,7 +725,7 @@ export default function App() {
                     <button onClick={downloadReport} className="flex-1 md:flex-none justify-center bg-[#1A3A5C] text-white border-none px-4 py-2 rounded-lg font-semibold cursor-pointer flex items-center gap-2 text-sm hover:bg-[#1A3A5C]/90">
                       <Download size={16} /> Download Batch (PDF)
                     </button>
-                    <button className="flex-1 md:flex-none justify-center bg-white text-[#1A3A5C] border border-[#1A3A5C] px-4 py-2 rounded-lg font-semibold cursor-pointer flex items-center gap-2 text-sm hover:bg-slate-50">
+                    <button onClick={handleEmailDeans} className="flex-1 md:flex-none justify-center bg-white text-[#1A3A5C] border border-[#1A3A5C] px-4 py-2 rounded-lg font-semibold cursor-pointer flex items-center gap-2 text-sm hover:bg-slate-50">
                       <Mail size={16} /> Email to Deans
                     </button>
                   </div>
@@ -764,7 +804,7 @@ export default function App() {
                     <h2 className="m-0 text-lg text-[#1A3A5C] font-bold">Admission Analytics</h2>
                     <p className="m-0 mt-1 text-xs text-slate-500">Applicant demographics, admission rates, and JAMB score distributions.</p>
                   </div>
-                  <button className="bg-white justify-center w-full md:w-auto text-[#1A3A5C] border border-[#1A3A5C] px-4 py-2 rounded-lg font-semibold cursor-pointer flex items-center gap-2 text-sm hover:bg-slate-50">
+                  <button onClick={handleExportAdmissions} className="bg-white justify-center w-full md:w-auto text-[#1A3A5C] border border-[#1A3A5C] px-4 py-2 rounded-lg font-semibold cursor-pointer flex items-center gap-2 text-sm hover:bg-slate-50">
                     <Download size={16} /> Export Report
                   </button>
                 </div>
@@ -899,7 +939,7 @@ export default function App() {
                       <option value="low">&lt; 60%</option>
                     </select>
 
-                    <button className="bg-white justify-center w-full md:w-auto text-[#1A3A5C] border border-[#1A3A5C] px-4 py-2 rounded-lg font-semibold cursor-pointer flex items-center gap-2 text-sm hover:bg-slate-50 shrink-0">
+                    <button onClick={handleExportFaculty} className="bg-white justify-center w-full md:w-auto text-[#1A3A5C] border border-[#1A3A5C] px-4 py-2 rounded-lg font-semibold cursor-pointer flex items-center gap-2 text-sm hover:bg-slate-50 shrink-0">
                       <Download size={16} /> Export CSV
                     </button>
                   </div>
@@ -1010,10 +1050,10 @@ export default function App() {
                     <p className="m-0 mt-1 text-xs text-slate-500">Real-time revenue tracking, fee collection, and outstanding payments.</p>
                   </div>
                   <div className="flex flex-wrap gap-2 w-full md:w-auto">
-                    <button className="flex-1 md:flex-none justify-center bg-[#1A3A5C] text-white border-none px-4 py-2 rounded-lg font-semibold cursor-pointer flex items-center gap-2 text-sm hover:bg-[#1A3A5C]/90 shadow-sm transition-colors">
+                    <button onClick={handleExportFinance} className="flex-1 md:flex-none justify-center bg-[#1A3A5C] text-white border-none px-4 py-2 rounded-lg font-semibold cursor-pointer flex items-center gap-2 text-sm hover:bg-[#1A3A5C]/90 shadow-sm transition-colors">
                       <Download size={16} /> Export Financial Report
                     </button>
-                    <button className="flex-1 md:flex-none justify-center bg-white text-[#1A3A5C] border border-slate-300 px-4 py-2 rounded-lg font-semibold cursor-pointer flex items-center gap-2 text-sm hover:bg-slate-50 transition-colors">
+                    <button onClick={handleSendReminders} className="flex-1 md:flex-none justify-center bg-white text-[#1A3A5C] border border-slate-300 px-4 py-2 rounded-lg font-semibold cursor-pointer flex items-center gap-2 text-sm hover:bg-slate-50 transition-colors">
                       <Mail size={16} /> Send Reminders
                     </button>
                   </div>
